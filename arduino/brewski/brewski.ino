@@ -47,33 +47,33 @@ void handleDataInput() {
 
    if(data.equals("TMP")){
       //return temperature
-      Serial.print(temp);
+      Serial.println(temp);
    } else if (data.startsWith("PMPON")) {
       digitalWrite(POMP_PIN,ON);
-      Serial.print(data);
+      Serial.println(data);
    } else if (data.startsWith("PMPOFF")) {
       digitalWrite(POMP_PIN,OFF);
-      Serial.print(data);
+      Serial.println(data);
    } else if (data.startsWith("HEAT0")) {
       digitalWrite(VERWARMINGSELEMENT1_PIN,OFF);
       digitalWrite(VERWARMINGSELEMENT2_PIN,OFF);
       digitalWrite(VERWARMINGSELEMENT3_PIN,OFF);
-      Serial.print(data);
+      Serial.println(data);
    } else if (data.startsWith("HEAT1")) {
       digitalWrite(VERWARMINGSELEMENT1_PIN,ON);
       digitalWrite(VERWARMINGSELEMENT2_PIN,OFF);
       digitalWrite(VERWARMINGSELEMENT3_PIN,OFF);
-      Serial.print(data);
+      Serial.println(data);
    } else if (data.startsWith("HEAT2")) {
       digitalWrite(VERWARMINGSELEMENT1_PIN,ON);
       digitalWrite(VERWARMINGSELEMENT2_PIN,ON);
       digitalWrite(VERWARMINGSELEMENT3_PIN,OFF);
-      Serial.print(data);
+      Serial.println(data);
    } else if (data.startsWith("HEAT3")) {
       digitalWrite(VERWARMINGSELEMENT1_PIN,ON);
       digitalWrite(VERWARMINGSELEMENT2_PIN,ON);
       digitalWrite(VERWARMINGSELEMENT3_PIN,ON);
-      Serial.print(data);
+      Serial.println(data);
    }
    
    newData = false;
