@@ -1,11 +1,16 @@
+#include <SoftwareSerial.h>
 #include <OneWire.h>
 
 //PIN NUMBERS
 //CHANGE TO ACTUAL PINS IN FINAL VERSION
-int POMP_PIN = 8;
-int VERWARMINGSELEMENT1_PIN = 9;
-int VERWARMINGSELEMENT2_PIN = 10;
-int VERWARMINGSELEMENT3_PIN = 11;
+int BLUETOOTH_RX_PIN = 10;
+int BLUETOOTH_TX_PIN = 11;
+
+
+int POMP_PIN = 9;
+int VERWARMINGSELEMENT1_PIN = 6;
+int VERWARMINGSELEMENT2_PIN = 7;
+int VERWARMINGSELEMENT3_PIN = 8;
 int THERMOMETER_PIN = 5;
 
 int ON = 1;
@@ -19,10 +24,13 @@ char receivedChars[numChars];
 boolean newData = false;
 
 OneWire ds(THERMOMETER_PIN);
+SoftwareSerial bluetoothSerial(BLUETOOTH_RX_PIN, BLUETOOTH_TX_PIN);
 
 void setup() {
   // read serial:
   Serial.begin(9600);
+  bluetoothSerial.begin(9600);
+  
 
   //setup output pins
   pinMode(VERWARMINGSELEMENT1_PIN,OUTPUT);
@@ -37,6 +45,15 @@ void setup() {
 
 void loop() {
   temp = getTemp();
+  Serial.print("{\"temp\":");
+  Serial.print(temp);
+  Serial.println("}");
+
+  bluetoothSerial.print("{\"temp\":");
+  bluetoothSerial.print(temp);
+  bluetoothSerial.println("}");
+  
+  delay(3000);
   recvWithStartEndMarkers();
   handleDataInput();
 }
@@ -45,10 +62,7 @@ void handleDataInput() {
  if (newData == true) {
    String data = String(receivedChars);
 
-   if(data.equals("TMP")){
-      //return temperature
-      Serial.println(temp);
-   } else if (data.startsWith("PMPON")) {
+   if (data.startsWith("PMPON")) {
       digitalWrite(POMP_PIN,ON);
       Serial.println(data);
    } else if (data.startsWith("PMPOFF")) {
@@ -134,8 +148,8 @@ void recvWithStartEndMarkers() {
     char endMarker = '>';
     char rc;
  
-    while (Serial.available() > 0 && newData == false) {
-        rc = Serial.read();
+    while (bluetoothSerial.available() > 0 && newData == false) {
+        rc = bluetoothSerial.read();
 
         if (recvInProgress == true) {
             if (rc != endMarker) {

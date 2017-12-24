@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
-import {BluetoothSerial} from "@ionic-native/bluetooth-serial";
+import {Component} from "@angular/core";
+import {IonicPage, NavController, NavParams} from "ionic-angular";
+import {KetelDataProvider} from "../../providers/ketel-data/ketel-data";
 
 /**
  * Generated class for the BluetoothPage page.
@@ -11,95 +11,40 @@ import {BluetoothSerial} from "@ionic-native/bluetooth-serial";
 
 @IonicPage()
 @Component({
-  selector: 'page-bluetooth',
-  templateUrl: 'bluetooth.html',
+    selector: 'page-bluetooth',
+    templateUrl: 'bluetooth.html',
 })
 export class BluetoothPage {
 
-  unpairedDevices: any;
-  pairedDevices: any;
-  gettingDevices: Boolean;
+    constructor(private ketelDataProvider: KetelDataProvider, public navCtrl: NavController, public navParams: NavParams) {
+    }
 
-  constructor(private bluetoothSerial: BluetoothSerial, private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
-    bluetoothSerial.enable();
-  }
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad BluetoothPage');
+    }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad BluetoothPage');
-  }
+    getPairedDevices() {
+        return this.ketelDataProvider.pairedDevices;
+    }
 
-  startScanning() {
-    this.pairedDevices = null;
-    this.unpairedDevices = null;
-    this.gettingDevices = true;
-    this.bluetoothSerial.discoverUnpaired().then((success) => {
-          this.unpairedDevices = success;
-          this.gettingDevices = false;
-          success.forEach(element => {
-            // alert(element.name);
-          });
-        },
-        (err) => {
-          console.log(err);
-        })
+    getUnpairedDevices() {
+        return this.ketelDataProvider.unpairedDevices;
+    }
 
-    this.bluetoothSerial.list().then((success) => {
-          this.pairedDevices = success;
-        },
-        (err) => {
+    isGettingDevices() {
+        return this.ketelDataProvider.gettingDevices;
+    }
 
-        })
-  }
+    startScanning() {
+        this.ketelDataProvider.startScanning();
+    }
 
-  success = (data) => alert(data);
-  fail = (error) => alert(error);
+    selectDevice(address: any) {
+        this.ketelDataProvider.selectDevice(address);
+    }
 
-  selectDevice(address: any) {
-
-    let alert = this.alertCtrl.create({
-      title: 'Connect',
-      message: 'Do you want to connect with?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Connect',
-          handler: () => {
-            this.bluetoothSerial.connect(address).subscribe(this.success, this.fail);
-          }
-        }
-      ]
-    });
-    alert.present();
-
-  }
-
-  disconnect() {
-    let alert = this.alertCtrl.create({
-      title: 'Disconnect?',
-      message: 'Do you want to Disconnect?',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Disconnect',
-          handler: () => {
-            this.bluetoothSerial.disconnect();
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
+    disconnect() {
+        this.ketelDataProvider.disconnect();
+    }
 
 }

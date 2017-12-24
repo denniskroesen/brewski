@@ -7,6 +7,7 @@ import {BluetoothSerial} from "@ionic-native/bluetooth-serial";
 import {MyApp} from "./app.component";
 import {HomePage} from "../pages/home/home";
 import {TabbingPage} from "../pages/tabbing/tabbing";
+import { KetelDataProvider } from '../providers/ketel-data/ketel-data';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import {TabbingPage} from "../pages/tabbing/tabbing";
         StatusBar,
         SplashScreen,
         BluetoothSerial,
-        {provide: ErrorHandler, useClass: IonicErrorHandler}
+        {provide: ErrorHandler, useClass: IonicErrorHandler},
+        KetelDataProvider
     ]
 })
 export class AppModule {

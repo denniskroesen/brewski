@@ -19,19 +19,21 @@
         <ion-list-header>
             Paired Devices
         </ion-list-header>
-        <ion-item *ngFor="let device of pairedDevices">
-            {{device.name}}
+        <ion-item *ngFor="let device of getPairedDevices()">
+            <span (click)="selectDevice(device.address)">
+              {{device.name}}
+            </span>
         </ion-item>
         <button ion-button block (click)="disconnect()">Disconnect</button>
         <ion-list-header>
-            availlable Devices
+            available Devices
         </ion-list-header>
-        <ion-item *ngFor='let device of unpairedDevices'>
-    <span (click)="selectDevice(device.address)">
-      {{device.name}}
-    </span>
+        <ion-item *ngFor='let device of getUnpairedDevices()'>
+            <span (click)="selectDevice(device.address)">
+              {{device.name}}
+            </span>
         </ion-item>
-        <ion-spinner name="crescent" *ngIf="gettingDevices"></ion-spinner>
+        <ion-spinner name="crescent" *ngIf="isGettingDevices()"></ion-spinner>
     </ion-list>
 
 </ion-content>

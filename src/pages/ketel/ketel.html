@@ -6,13 +6,16 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>ketel</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>Ketel</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+    <div>temp: {{ temp }}</div>
+
+    <button *ngIf="ledOn == false" ion-button block (click)="sendLedOn()">Led</button>
 
 </ion-content>
