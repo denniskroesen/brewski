@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {BluetoothSerial} from "@ionic-native/bluetooth-serial";
 import {AlertController} from "ionic-angular";
 import {Observable} from "rxjs";
+import {KetelModel} from "../../models/KetelModel";
 
 /*
  Generated class for the KetelDataProvider provider.
@@ -12,15 +13,20 @@ import {Observable} from "rxjs";
 @Injectable()
 export class KetelDataProvider {
 
+    get ketelModel(): KetelModel {
+        return this._ketelModel;
+    }
+
     public unpairedDevices: any;
     public pairedDevices: any;
     public gettingDevices: Boolean;
     private connectedAddress: any;
-    public temp: any;
-    public dataObserver: Observable<any>;
+    public dataSubscription: Observable<any>;
+    private _ketelModel: KetelModel;
 
     constructor(public bluetoothSerial: BluetoothSerial, private alertCtrl: AlertController) {
         bluetoothSerial.enable();
+        this._ketelModel = new KetelModel();
     }
 
     startScanning() {
@@ -67,7 +73,7 @@ export class KetelDataProvider {
                     handler: () => {
                         this.bluetoothSerial.connect(address).subscribe(this.success, this.fail);
                         this.connectedAddress = address;
-                        // this.subscribeToData();
+                        this.subscribeToData();
                     }
                 }
             ]
@@ -104,15 +110,13 @@ export class KetelDataProvider {
     }
 
     subscribeToData() {
-        if(this.bluetoothSerial.isConnected()) {
-        // this.bluetoothSerial.available().then((number: any) => {
-            this.bluetoothSerial.subscribe('\n')
-                .subscribe((data: any) => {
-                    alert(data);
-                    let dataObj = JSON.parse(data);
-                    this.temp = dataObj.temp;
-                });
-        };
+        this.dataSubscription = this.bluetoothSerial.subscribe('\n');
+        this.dataSubscription.subscribe(
+            (data) => {
+                // alert(data);
+                let ketelObj = JSON.parse(data);
+                this._ketelModel.temperature = ketelObj.temp;
+                this._ketelModel.updated();
+            });
     }
-
 }

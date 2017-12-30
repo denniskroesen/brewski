@@ -1,7 +1,7 @@
 import {Component, NgZone} from "@angular/core";
 import {IonicPage, NavController, NavParams, Events} from "ionic-angular";
 import {KetelDataProvider} from "../../providers/ketel-data/ketel-data";
-import {Observable} from "rxjs";
+import {KetelDataMockProvider} from "../../providers/ketel-data-mock/ketel-data-mock";
 
 /**
  * Generated class for the KetelPage page.
@@ -17,15 +17,11 @@ import {Observable} from "rxjs";
 })
 export class KetelPage {
 
-    private temp: any = 10.5;
-    private data: Array<string> = [];
-    private ketel: any;
-    private dataSubscription: Observable<any>;
     private ledOn: boolean = false;
 
     constructor(public events: Events,
                 private zone: NgZone,
-                public ketelDataProvider: KetelDataProvider,
+                public ketelDataProvider: KetelDataMockProvider,
                 public navCtrl: NavController,
                 public navParams: NavParams) {
         this.events.subscribe('updateScreen', () => {
@@ -35,26 +31,20 @@ export class KetelPage {
         });
     }
 
-    getTemp() {
-        this.ketelDataProvider.temp;
+    turnHeat(heater: number) {
+        let command = "HEAT" + heater;
+        this.ketelDataProvider.sendCommand(command);
     }
+
 
     ionViewDidEnter() {
         this.getData();
     }
 
-    setTemp(temperature: any) {
-        this.temp = temperature;
-    }
-
     getData() {
-        this.dataSubscription = this.ketelDataProvider.bluetoothSerial.subscribe('\n');
-        this.dataSubscription.subscribe(
+        this.ketelDataProvider.ketelModel.updates().subscribe(
             (data) => {
-                this.data.push(data);
-                let ketelObj = JSON.parse(data);
-                // this.ketel = ketelObj;
-                this.temp = ketelObj.temp;
+                // alert(data);
                 this.events.publish('updateScreen');
             });
     }

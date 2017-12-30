@@ -14,8 +14,25 @@
 
 
 <ion-content padding>
-    <div>temp: {{ temp }}</div>
+    <div>temp: {{ ketelDataProvider.ketelModel.temperature }}</div>
 
-    <button *ngIf="ledOn == false" ion-button block (click)="sendLedOn()">Led</button>
+    <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater1 == false" outline (click)="turnHeat(1)">
+        <ion-icon name="flame"></ion-icon>
+    </button>
+    <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater1 == true" (click)="turnHeat(0)">
+        <ion-icon name="flame"></ion-icon>
+    </button>
+    <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater2 == false" outline (click)="turnHeat(2)">
+        <ion-icon name="flame"></ion-icon>
+    </button>
+    <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater2 == true" (click)="turnHeat(1)">
+        <ion-icon name="flame"></ion-icon>
+    </button>
+    <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater3 == false" outline (click)="turnHeat(3)">
+        <ion-icon name="flame"></ion-icon>
+    </button>
+    <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater3 == true" (click)="turnHeat(2)">
+        <ion-icon name="flame"></ion-icon>
+    </button>
 
 </ion-content>

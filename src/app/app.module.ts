@@ -8,6 +8,7 @@ import {MyApp} from "./app.component";
 import {HomePage} from "../pages/home/home";
 import {TabbingPage} from "../pages/tabbing/tabbing";
 import { KetelDataProvider } from '../providers/ketel-data/ketel-data';
+import { KetelDataMockProvider } from '../providers/ketel-data-mock/ketel-data-mock';
 
 @NgModule({
     declarations: [
@@ -30,7 +31,8 @@ import { KetelDataProvider } from '../providers/ketel-data/ketel-data';
         SplashScreen,
         BluetoothSerial,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
-        KetelDataProvider
+        KetelDataProvider,
+        KetelDataMockProvider
     ]
 })
 export class AppModule {
