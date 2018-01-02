@@ -15,10 +15,10 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class TabbingPage {
 
-  ketelRoot = 'KetelPage'
-  receptRoot = 'ReceptPage'
-  bluetoothRoot = 'BluetoothPage'
-
+  ketelRoot = 'KetelPage';
+  receptRoot = 'ReceptPage';
+  bluetoothRoot = 'BluetoothPage';
+  receptRunnerRoot = 'ReceptrunnerPage';
 
   constructor(public navCtrl: NavController) {}
 

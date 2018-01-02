@@ -1,7 +1,6 @@
 import {Component, NgZone} from "@angular/core";
 import {IonicPage, NavController, NavParams, Events} from "ionic-angular";
 import {KetelDataProvider} from "../../providers/ketel-data/ketel-data";
-import {KetelDataMockProvider} from "../../providers/ketel-data-mock/ketel-data-mock";
 
 /**
  * Generated class for the KetelPage page.
@@ -21,7 +20,7 @@ export class KetelPage {
 
     constructor(public events: Events,
                 private zone: NgZone,
-                public ketelDataProvider: KetelDataMockProvider,
+                public ketelDataProvider: KetelDataProvider,
                 public navCtrl: NavController,
                 public navParams: NavParams) {
         this.events.subscribe('updateScreen', () => {

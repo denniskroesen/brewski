@@ -19,19 +19,19 @@
     <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater1 == false" outline (click)="turnHeat(1)">
         <ion-icon name="flame"></ion-icon>
     </button>
-    <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater1 == true" (click)="turnHeat(0)">
+    <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater1" (click)="turnHeat(0)">
         <ion-icon name="flame"></ion-icon>
     </button>
     <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater2 == false" outline (click)="turnHeat(2)">
         <ion-icon name="flame"></ion-icon>
     </button>
-    <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater2 == true" (click)="turnHeat(1)">
+    <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater2" (click)="turnHeat(1)">
         <ion-icon name="flame"></ion-icon>
     </button>
     <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater3 == false" outline (click)="turnHeat(3)">
         <ion-icon name="flame"></ion-icon>
     </button>
-    <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater3 == true" (click)="turnHeat(2)">
+    <button ion-button icon-only *ngIf="ketelDataProvider.ketelModel.heater3" (click)="turnHeat(2)">
         <ion-icon name="flame"></ion-icon>
     </button>
 

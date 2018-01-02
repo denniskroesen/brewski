@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {FormBuilder, Validators} from "@angular/forms";
 import {BluetoothSerial} from "@ionic-native/bluetooth-serial";
+import {ReceptProvider} from "../../providers/recept/recept";
+import {ReceptStap} from "../../models/ReceptStap";
 
 /**
  * Generated class for the ReceptPage page.
@@ -13,38 +15,17 @@ import {BluetoothSerial} from "@ionic-native/bluetooth-serial";
 @IonicPage()
 @Component({
   selector: 'page-recept',
-  templateUrl: 'recept.html',
-  template: `
-    <form [formGroup]="todo" (ngSubmit)="logForm()">
-      <ion-item>
-        <ion-label>Schema eerste temperatuur</ion-label>
-        <ion-input type="text" formControlName="temperature"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Schema eerste temp tijd</ion-label>
-        <ion-input type="text" formControlName="time"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Schema tweede temperatuur</ion-label>
-        <ion-input type="text" formControlName="temperature2"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Schema tweede temp tijd</ion-label>
-        <ion-input type="text" formControlName="time2"></ion-input>
-      </ion-item>
-      <button ion-button type="submit" [disabled]="!todo.valid">Submit</button>
-    </form>`
+  templateUrl: 'recept.html'
 })
 export class ReceptPage {
 
-  private todo;
+  private receptForm;
 
-  constructor(private bluetoothSerial: BluetoothSerial, public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder) {
-    bluetoothSerial.enable();
-    this.todo = this.formBuilder.group({
-      temperature: ['', Validators.required],
+  constructor(private receptProvider: ReceptProvider, public navCtrl: NavController, public navParams: NavParams, private formBuilder: FormBuilder) {
+    this.receptForm = this.formBuilder.group({
+      temperature1: ['', Validators.required],
       temperature2: ['', Validators.required],
-      time: ['', Validators.required],
+      time1: ['', Validators.required],
       time2: ['', Validators.required],
     });
   }
@@ -53,8 +34,10 @@ export class ReceptPage {
     console.log('ionViewDidLoad ReceptPage');
   }
 
-  logForm(){
-    console.log(this.todo.value)
-    this.bluetoothSerial.write(this.todo.value);
+  storeForm(){
+    let receptStap1 = new ReceptStap(this.receptForm.value.temperature1, this.receptForm.value.time1);
+    let receptStap2 = new ReceptStap(this.receptForm.value.temperature2, this.receptForm.value.time2);
+    this.receptProvider.addReceptStap(receptStap1);
+    this.receptProvider.addReceptStap(receptStap2);
   }
 }
