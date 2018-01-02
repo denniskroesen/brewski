@@ -31,7 +31,6 @@ void setup() {
   Serial.begin(9600);
   bluetoothSerial.begin(9600);
   
-
   //setup output pins
   pinMode(VERWARMINGSELEMENT1_PIN,OUTPUT);
   pinMode(VERWARMINGSELEMENT2_PIN,OUTPUT);
@@ -45,17 +44,23 @@ void setup() {
 
 void loop() {
   temp = getTemp();
-  Serial.print("{\"temp\":");
-  Serial.print(temp);
-  Serial.println("}");
+  String json = createJson();
 
-  bluetoothSerial.print("{\"temp\":");
-  bluetoothSerial.print(temp);
-  bluetoothSerial.println("}");
+  Serial.println(json);
+  bluetoothSerial.println(json);
   
   delay(3000);
   recvWithStartEndMarkers();
   handleDataInput();
+}
+
+String createJson(){
+  String json = "{\"temp\":" + temp + ",";
+  json+= "\"heat1\":" + digitalRead(VERWARMINGSELEMENT1_PIN) + ",";
+  json+= "\"heat2\":" + digitalRead(VERWARMINGSELEMENT2_PIN) + ",";
+  json+= "\"heat3\":" + digitalRead(VERWARMINGSELEMENT3_PIN) + ",";
+  json+= "\"pomp\":" + digitalRead(POMP_PIN) + "}";
+  return json;
 }
 
 void handleDataInput() {
