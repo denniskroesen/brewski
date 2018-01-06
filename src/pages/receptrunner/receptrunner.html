@@ -19,6 +19,7 @@
       {{receptStap.temperatuur}} > {{receptStap.tijd}}
     </span>
   </ion-item>
-
+  <span>{{receptProvider.timerDisplay}}</span>
+  <button ion-button block (click)="receptProvider.run()">start</button>
 
 </ion-content>
